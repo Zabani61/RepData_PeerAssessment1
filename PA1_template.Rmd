@@ -8,7 +8,24 @@ output:
 
 ## Loading and preprocessing the data
 
-
+get.data <- function (){
+  if (!file.exists("data1")) {
+    message("Creating Data folder in working directory")
+    dir.create("data1")
+  }
+  
+  if(!file.exists("data/repdata-data-activity")) {
+    fileURL <- "http://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip"
+    download.file(fileURL, destfile = "./data1/repdata-data-activity.zip")
+    file.name <- "./data1/repdata-data-activity.zip"
+    unzip(file.name, exdir = "data1")
+    unlink(file.name)
+  }
+  else message("data already exists")
+}
+get.data()
+activity <- read.csv("./data1/activity.csv", colClasses = c("numeric", "Date", "numeric"))
+activity$day <- weekdays(activity$date)
 
 ## What is mean total number of steps taken per day?
 
